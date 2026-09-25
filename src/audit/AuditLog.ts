@@ -19,6 +19,7 @@ export type AuditEventKind =
   | 'approval_expired'
   | 'expired_choice'
   | 'disk_write'
+  | 'command_execution'
   | 'auth_failure'
   | 'server';
 
