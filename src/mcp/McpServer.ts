@@ -142,6 +142,13 @@ export class BridgeServer implements vscode.Disposable {
                 detail: request.relPath,
                 ok: false
               });
+            } else if (request.tool === 'run_command') {
+              this.deps.audit.append({
+                kind: 'command_execution',
+                tool: request.tool,
+                detail: `${request.relPath}: ${request.summary}`,
+                ok: true
+              });
             } else if (request.diskImmediate) {
               // 디스크에 즉시 반영되는 작업은 별도로 남긴다 (§4.2.1).
               this.deps.audit.append({
