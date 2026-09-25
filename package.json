@@ -177,6 +177,29 @@
           ],
           "default": "en",
           "description": "Language for the panel, status bar and dialogs. Logs and tool descriptions stay in English."
+        },
+        "gptBridge.commandExecution.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable the local run_command MCP tool. Commands always require explicit approval and run with the VS Code user's OS privileges."
+        },
+        "gptBridge.commandExecution.allowedExecutables": {
+          "type": "array",
+          "default": [
+            "git",
+            "node",
+            "npm",
+            "npx",
+            "python",
+            "python3",
+            "py",
+            "pytest",
+            "adb"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "description": "Bare executable names allowed for run_command. Add powershell.exe or pwsh.exe only if you explicitly want full shell execution."
         }
       }
     }
