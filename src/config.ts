@@ -17,6 +17,8 @@ export interface BridgeConfig {
   readonly autoSave: boolean;
   readonly denyExtraPatterns: readonly string[];
   readonly maxReadBytes: number;
+  readonly commandExecutionEnabled: boolean;
+  readonly commandAllowedExecutables: readonly string[];
   readonly language: Lang;
 }
 
@@ -63,6 +65,12 @@ export function readConfig(): BridgeConfig {
     autoSave: cfg.get<boolean>('autoSave', false),
     denyExtraPatterns: stringArray(cfg.get<unknown[]>('deny.extraPatterns', [])),
     maxReadBytes: cfg.get<number>('maxReadBytes', 1048576),
+    commandExecutionEnabled: cfg.get<boolean>('commandExecution.enabled', false),
+    commandAllowedExecutables: stringArray(
+      cfg.get<unknown[]>('commandExecution.allowedExecutables', [
+        'git', 'node', 'npm', 'npx', 'python', 'python3', 'py', 'pytest', 'adb'
+      ])
+    ),
     // 알 수 없는 값은 영어로 떨어뜨린다. 기본 언어가 비는 것보다 낫다.
     language: isLang(rawLanguage) ? rawLanguage : 'en'
   };
