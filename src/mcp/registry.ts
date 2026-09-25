@@ -47,6 +47,12 @@ import {
   searchTextTool,
   type SearchTextArgs
 } from './tools/searchText';
+import {
+  RUN_COMMAND_DESCRIPTION,
+  runCommandSchema,
+  runCommandTool,
+  type RunCommandArgs
+} from './tools/runCommand';
 import { errorResult, type ToolContext, type ToolResult } from './tools/types';
 
 export const SERVER_NAME = 'gpt-bridge';
@@ -261,6 +267,24 @@ export function createConfiguredServer(ctx: ToolContext): McpServer {
       async (args: DeletePathArgs) => deletePathTool(ctx, args)
     )
   );
+
+  if (ctx.config().commandExecutionEnabled) {
+    server.registerTool(
+      'run_command',
+      {
+        title: 'Run local command',
+        description: RUN_COMMAND_DESCRIPTION,
+        inputSchema: runCommandSchema,
+        annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: true }
+      },
+      guarded(
+        ctx,
+        'run_command',
+        (args: RunCommandArgs) => args.command,
+        async (args: RunCommandArgs) => runCommandTool(ctx, args)
+      )
+    );
+  }
 
   server.registerTool(
     'save_file',
